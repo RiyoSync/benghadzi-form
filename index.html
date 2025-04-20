@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benghadzi Trading Giveaway</title>
+    <style>
+        :root {
+            --deep-black: #0D0D0D;
+            --input-bg: #1A1A1A;
+            --gold: #FFD700;
+            --navy-dark: #0B1A30;
+            --text-white: #ffffff;
+            --border-radius: 12px;
+            --input-padding: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--deep-black);
+            color: var(--text-white);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .giveaway-form {
+            background-color: rgba(26, 26, 26, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .giveaway-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            animation: glowBorder 3s linear infinite;
+            z-index: 1;
+        }
+
+        .form-header {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .language-toggle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .language-btn {
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .language-btn.active {
+            background-color: var(--gold);
+            color: var(--deep-black);
+        }
+
+        .language-btn:hover:not(.active) {
+            background-color: rgba(255, 215, 0, 0.2);
+        }
+
+        .giveaway-banner {
+            background: linear-gradient(135deg, rgba(11, 26, 48, 0.9), rgba(0, 0, 0, 0.9));
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .giveaway-banner h2 {
+            color: var(--gold);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .giveaway-banner p {
+            font-weight: 300;
+            line-height: 1.6;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Cyberpunk glow effect */
+        .glow-effect {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.4) 0%, rgba(255, 215, 0, 0) 70%);
+            border-radius: 50%;
+            filter: blur(20px);
+            animation: float 8s ease-in-out infinite;
+            opacity: 0.7;
+        }
+
+        .glow-1 {
+            top: -50px;
+            left: -50px;
+            animation-delay: 0s;
+        }
+
+        .glow-2 {
+            bottom: -30px;
+            right: -30px;
+            width: 100px;
+            height: 100px;
+            animation-delay: 2s;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--gold);
+            font-weight: 500;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: var(--input-padding);
+            background-color: var(--input-bg);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: var(--border-radius);
+            color: var(--text-white);
+            transition: all 0.3s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .color-swatches {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .color-swatch {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.1);
+        }
+
+        .color-swatch.selected {
+            box-shadow: 0 0 0 2px var(--gold);
+        }
+
+        .color-swatch.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-shadow: 0 0 2px black;
+        }
+
+        .light-grey {
+            background-color: #D3D3D3;
+        }
+
+        .dark {
+            background-color: #0D0D0D;
+        }
+
+        .gold {
+            background-color: var(--gold);
+        }
+
+        .navy-dark {
+            background-color: #0B1A30;
+        }
+
+        .submit-btn {
+            background-color: var(--gold);
+            color: var(--deep-black);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.3) 50%,
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(30deg);
+            animation: shimmer 3s infinite;
+        }
+
+        .journal-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .journal-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 25px rgba(255, 215, 0, 0.15);
+        }
+
+        @keyframes glowBorder {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-150%) rotate(30deg); }
+            100% { transform: translateX(150%) rotate(30deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .journal-image {
+                order: -1;
+                margin-bottom: 2rem;
+            }
+
+            .journal-image img {
+                max-width: 250px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .giveaway-form {
+                padding: 1.5rem;
+            }
+
+            .giveaway-banner h2 {
+                font-size: 1.1rem;
+            }
+
+            .language-toggle {
+                position: relative;
+                margin-bottom: 1rem;
+                justify-content: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="giveaway-form">
+            <div class="form-header">
+                <div class="language-toggle">
+                    <button class="language-btn active" data-lang="en">English</button>
+                    <button class="language-btn" data-lang="so">Somali</button>
+                </div>
+            </div>
+            
+            <div class="giveaway-banner">
+                <div class="glow-effect glow-1"></div>
+                <div class="glow-effect glow-2"></div>
+                <h2>Benghadzi Trading Giveaway</h2>
+                <p>✨ The first 50 submissions will receive a free Benghadzi trading sticker (50cm x 120cm), personalized trading journal, and a classic pen – all delivered in premium packaging. ✨</p>
+            </div>
+            
+            <form id="benghadziForm">
+                <div class="form-group">
+                    <label for="name" data-en="Name" data-so="Magacaaga">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone" data-en="Phone Number" data-so="Lambarkaaga">Phone Number</label>
+                    <input type="text" id="phone" name="phone" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="forexAccounts" data-en="Number of Forex Accounts" data-so="Tirada Forex Accounts-ka">Number of Forex Accounts</label>
+                    <input type="number" id="forexAccounts" name="forexAccounts" min="1" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="tradingStrategy" data-en="Trading Strategy" data-so="Trading Strategy-gaaga">Trading Strategy</label>
+                    <textarea id="tradingStrategy" name="tradingStrategy" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="sessionsTrade" data-en="Sessions Traded" data-so="Sessions-ka aad ka ganacsato">Sessions Traded</label>
+                    <select id="sessionsTrade" name="sessionsTrade" multiple required>
+                        <option value="London">London</option>
+                        <option value="New York">New York</option>
+                        <option value="Asian">Asian</option>
+                        <option value="All">All</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="timeTraded" data-en="Time You Trade" data-so="Waqtiga aad Ganacsato">Time You Trade</label>
+                    <input type="text" id="timeTraded" name="timeTraded" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="maxLoss" data-en="Daily Max Loss per Account" data-so="Daily Max Loss per Account">Daily Max Loss per Account</label>
+                    <input type="text" id="maxLoss" name="maxLoss" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="profitTarget" data-en="Daily Profit Target" data-so="Daily Profit Target">Daily Profit Target</label>
+                    <input type="text" id="profitTarget" name="profitTarget" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="entryRules" data-en="Entry Rules" data-so="Shuruucda Gelitaanka">Entry Rules</label>
+                    <textarea id="entryRules" name="entryRules" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label data-en="Sticker Background Color" data-so="Sticker Background Color">Sticker Background Color</label>
+                    <div class="color-swatches">
+                        <div class="color-swatch light-grey" data-color="Light Grey"></div>
+                        <div class="color-swatch dark" data-color="Dark"></div>
+                        <div class="color-swatch gold" data-color="Gold"></div>
+                        <div class="color-swatch navy-dark" data-color="Navy Dark"></div>
+                    </div>
+                    <input type="hidden" id="stickerColor" name="stickerColor" value="" required>
+                </div>
+                
+                <button type="submit" class="submit-btn" data-en="Submit" data-so="Gudbi">Submit</button>
+            </form>
+        </div>
+        
+        <div class="journal-image">
+            <img src="./images/journal-cover.png" alt="Benghadzi Trading Journal">
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Language toggling functionality
+            const langBtns = document.querySelectorAll('.language-btn');
+            const langElements = document.querySelectorAll('[data-en][data-so]');
+            
+            langBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const lang = this.getAttribute('data-lang');
+                    
+                    // Toggle active class
+                    langBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update all texts
+                    langElements.forEach(el => {
+                        el.textContent = el.getAttribute(`data-${lang}`);
+                    });
+                });
+            });
+            
+            // Color swatch selection
+            const colorSwatches = document.querySelectorAll('.color-swatch');
+            const colorInput = document.getElementById('stickerColor');
+            
+            colorSwatches.forEach(swatch => {
+                swatch.addEventListener('click', function() {
+                    // Remove selected class from all swatches
+                    colorSwatches.forEach(s => s.classList.remove('selected'));
+                    
+                    // Add selected class to clicked swatch
+                    this.classList.add('selected');
+                    
+                    // Update hidden input value
+                    colorInput.value = this.getAttribute('data-color');
+                });
+            });
+            
+            // Form submission
+            const form = document.getElementById('benghadziForm');
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validate all fields are filled
+                const inputs = form.querySelectorAll('input:not([type="hidden"]), textarea, select');
+                let isValid = true;
+                
+                inputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        isValid = false;
+                        input.style.borderColor = 'red';
+                    } else {
+                        input.style.borderColor = '';
+                    }
+                });
+                
+                // Check if color is selected
+                if (!colorInput.value) {
+                    isValid = false;
+                    alert('Please select a sticker background color');
+                }
+                
+                if (isValid) {
+                    // FormSpree example
+                    const formData = new FormData(form);
+                    
+                    fetch('https://formspree.io/f/manerzqe', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            // Redirect to preview page
+                            window.location.href = '/benghadzi-preview.html';
+                        } else {
+                            alert('There was an issue with your submission. Please try again.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('There was an error submitting your form. Please try again later.');
+                    });
+                }
+            });
+
+            // Add animated light streaks to the banner
+            const banner = document.querySelector('.giveaway-banner');
+            
+            function createLightStreak() {
+                const streak = document.createElement('div');
+                streak.style.position = 'absolute';
+                streak.style.width = '2px';
+                streak.style.height = `${Math.random() * 30 + 10}px`;
+                streak.style.background = 'rgba(255, 215, 0, 0.6)';
+                streak.style.borderRadius = '50%';
+                streak.style.filter = 'blur(2px)';
+                streak.style.top = `${Math.random() * 100}%`;
+                streak.style.left = `${Math.random() * 100}%`;
+                streak.style.opacity = '0';
+                streak.style.zIndex = '1';
+                
+                const duration = Math.random() * 2 + 1;
+                streak.style.animation = `fadeInOut ${duration}s ease-in-out`;
+                
+                banner.appendChild(streak);
+                
+                setTimeout(() => {
+                    banner.removeChild(streak);
+                }, duration * 1000);
+            }
+            
+            setInterval(createLightStreak, 300);
+            
+            // Add a cyberpunk style cursor effect
+            const cursorEffect = document.createElement('div');
+            cursorEffect.style.position = 'fixed';
+            cursorEffect.style.width = '20px';
+            cursorEffect.style.height = '20px';
+            cursorEffect.style.borderRadius = '50%';
+            cursorEffect.style.background = 'rgba(255, 215, 0, 0.3)';
+            cursorEffect.style.boxShadow = '0 0 10px rgba(255, 215, 0, 0.5)';
+            cursorEffect.style.pointerEvents = 'none';
+            cursorEffect.style.zIndex = '9999';
+            cursorEffect.style.transform = 'translate(-50%, -50%)';
+            cursorEffect.style.opacity = '0';
+            cursorEffect.style.transition = 'opacity 0.3s ease';
+            
+            document.body.appendChild(cursorEffect);
+            
+            document.addEventListener('mousemove', function(e) {
+                cursorEffect.style.left = `${e.clientX}px`;
+                cursorEffect.style.top = `${e.clientY}px`;
+                cursorEffect.style.opacity = '1';
+            });
+            
+            document.addEventListener('mouseleave', function() {
+                cursorEffect.style.opacity = '0';
+            });
+
+            // Make first color swatch selected by default
+            colorSwatches[0].click();
+
+            // Add keyframe animation for fading light streaks
+            const styleSheet = document.createElement('style');
+            styleSheet.textContent = `
+                @keyframes fadeInOut {
+                    0% { opacity: 0; transform: scale(0.5); }
+                    50% { opacity: 1; transform: scale(1.5); }
+                    100% { opacity: 0; transform: scale(0.5); }
+                }
+            `;
+            document.head.appendChild(styleSheet);
+        });
+    </script>
+</body>
+</html>
